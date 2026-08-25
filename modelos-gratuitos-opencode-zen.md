@@ -76,6 +76,7 @@ Este es el criterio que deberías ponderar primero, porque el precio es igual ($
 | 💻 Escritura de código | **Big Pickle** | Ox Alpha Free, Hy3 Free | — |
 | ♻️ Refactorización | **Big Pickle** | Nemotron 3 Ultra Free, Hy3 Free | Nemotron 3.5 Lightning |
 | 🧪 Tests | **Ox Alpha Free** | Nemotron 3.5 Lightning Free | — |
+| 📝 Documentación / guías / manuales | **Hy3 Free** | Big Pickle, MiMo-V2.5 Free | Nemotron 3.5 Lightning |
 
 ### 4.1 Planeamiento (arquitectura, descomposición de tareas, diseño)
 
@@ -112,6 +113,18 @@ Consejo: para refactors, pide primero un **plan** (con el modelo de planeamiento
 Alternativas:
 - **Nemotron 3.5 Lightning Free**: aquí sí brilla su velocidad; perfecto para generar lotes de tests unitarios rutinarios o casos borde a partir de una función ya definida.
 - **MiMo-V2.5 Free**: bueno para diseñar casos límite gracias a su razonamiento (edge cases, invariantes).
+
+### 4.5 Documentación, guías y manuales (READMEs, onboarding, arquitectura)
+
+**Recomendado: `hy3-free`** — Es un generalista grande con buen equilibrio entre redacción, conocimiento amplio y código. La documentación técnica exige explicar conceptos con claridad, mantener estructura y consistencia a lo largo de un texto largo, y combinar prosa con bloques de código: justo el perfil de un generalista sólido.
+
+Alternativas:
+- **Big Pickle**: gama alta; mejor cuando la guía mezcla mucha referencia al repo y requiere seguir instrucciones complejas de formato/estilo.
+- **MiMo-V2.5 Free**: su razonamiento ayuda a estructurar manuales con jerarquía clara (secciones, pasos, casos de uso) y a anticipar dudas del lector.
+
+Evita: **Nemotron 3.5 Lightning**, que privilegia velocidad sobre profundidad narrativa; la documentación suele quedar superficial o desordenada.
+
+Consejo: si la guía es larga o de varios archivos, pide primero un **índice/estructura** (con el modelo de planeamiento `nemotron-3-ultra-free`), revísalo, y luego redacta cada sección con `hy3-free` o `big-pickle` para mantener consistencia.
 
 ---
 

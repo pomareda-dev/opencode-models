@@ -58,7 +58,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 
 ---
 
-## Código vs Planeamiento vs Testing
+## Código vs Planeamiento vs Testing vs Documentación
 
 ### Para Código (generación, implementación, debugging)
 
@@ -103,6 +103,25 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 - **Cobertura masiva / tests repetitivos** → DeepSeek V4 Flash, Hy3 o MiMo-V2.5
 - **Tests de regresión / validación** → MiniMax M3 o Qwen3.7 Plus
 
+### Para Documentación (guías, manuales, READMEs, onboarding, arquitectura)
+
+| Modelo | Por qué |
+|--------|---------|
+| GLM-5.3 / GLM-5.2 | Razonamiento profundo: estructura lógica, consistencia en textos largos, precisa explicación de conceptos |
+| Kimi K3 | Calidad top para documentación crítica de arquitectura y guías complejas de alto nivel |
+| GPT 5.6 Luna | Buena calidad general de redacción técnica y tono profesional |
+| Hy3 | Alto volumen y costo-efectivo: ideal para generar manuales extensos o docs repetitivas |
+| Qwen3.7 Plus / Qwen3.6 Plus | Rápidos y versátiles para documentación de API, guías de onboarding y docs de features |
+| DeepSeek V4 Flash | Velocidad para iterar documentación masiva (referencias de API, changelogs, docs autogeneradas) |
+| MiniMax M3 | Buen balance para guías que mezclan prosa técnica con ejemplos de código |
+
+**Estrategia Documentación:**
+- **Documentación crítica / arquitectura** → Kimi K3 o GLM-5.3 (calidad top, razonamiento profundo)
+- **Guías y manuales extensos** → GLM-5.2 o GPT 5.6 Luna (consistencia narrativa en textos largos)
+- **Onboarding / guías paso a paso** → Qwen3.7 Plus o MiniMax M3 (claridad y rapidez)
+- **Documentación masiva / autogenerada** → Hy3 o DeepSeek V4 Flash (volumen y velocidad)
+- **Referencias de API / changelogs** → DeepSeek V4 Flash (iteración rápida y alto throughput)
+
 ---
 
 ## Estrategia recomendada
@@ -111,6 +130,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 - **Día a día** → DeepSeek V4 Flash, Qwen3.7 Plus, Kimi K2.7 Code, o MiniMax M3
 - **Iteraciones rápidas / prototipado** → DeepSeek V4 Flash, Hy3, MiMo-V2.5
 - **Testing** → GLM-5.3 (complejo), Kimi K2.7 Code (TDD), DeepSeek V4 Flash (cobertura)
+- **Documentación** → Kimi K3/GLM-5.3 (crítica), GLM-5.2/GPT 5.6 Luna (manuales), Hy3/DeepSeek V4 Flash (volumen)
 - **Compatibilidad Anthropic** → MiniMax M3 / M2.7, Qwen3.8/3.7 Max/Plus
 - **Visión** → DeepSeek V4 Flash Vision Exp
 - **Planear + ejecutar** → Usa Kimi K3 / GLM-5.3 / Grok 4.5 para el plan, luego cambia a DeepSeek V4 Flash o Qwen3.7 Plus para la ejecución
