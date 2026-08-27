@@ -1,9 +1,9 @@
 # OpenCode Go - Guía de Modelos
 
-> **Información actualizada:** 22 de agosto de 2026
+> **Información actualizada:** 26 de agosto de 2026
 > Fuente: [opencode.ai/docs/go](https://opencode.ai/docs/go/)
 
-Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/mes
+Suscripción: **$10/mes** ($5 el primer mes) | Límites: $12/5h, $30/semana, $60/mes
 
 ---
 
@@ -12,7 +12,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 | Modelo | req/5h | req/semana | req/mes | Mejor para |
 |--------|--------|------------|---------|------------|
 | Kimi K3 | ~110 | ~250 | ~490 | Flagship Kimi, razonamiento top, contexto largo |
-| Grok 4.5 | ~120 | ~300 | ~600 | Razonamiento fuerte xAI, tareas complejas |
+| Grok 4.6 | ~169 | ~423 | ~845 | Razonamiento fuerte xAI, tareas complejas |
 | Qwen3.8 Max | ~160 | ~400 | ~810 | Máxima calidad Qwen, arquitectura y sistemas grandes |
 | GLM-5.3 | ~220 | ~540 | ~1,080 | Nueva generación GLM, razonamiento de primer nivel |
 | Qwen3.7 Max | ~340 | ~840 | ~1,690 | Razonamiento avanzado con contexto extenso |
@@ -21,7 +21,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 | DeepSeek V4 Pro | ~1,050 | ~2,600 | ~5,200 | Razonamiento fuerte, buena relación calidad/precio |
 | Kimi K2.6 | ~1,150 | ~2,880 | ~5,750 | Razonamiento avanzado, código multi-archivo |
 
-**Úsalos cuando:** Necesites la mejor calidad posible — refactors grandes, arquitectura, debugging complejo. No los gastes en tareas triviales. Kimi K3, Grok 4.5 y Qwen3.8 Max tienen usage reducido ($15), usalos con criterio.
+**Úsalos cuando:** Necesites la mejor calidad posible — refactors grandes, arquitectura, debugging complejo. No los gastes en tareas triviales. Kimi K3, Grok 4.6 y Qwen3.8 Max tienen usage reducido ($15), usalos con criterio.
 
 ---
 
@@ -31,10 +31,12 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 |--------|--------|------------|---------|------------|
 | Kimi K2.7 Code | ~1,350 | ~3,380 | ~6,750 | Código optimizado, buen balance calidad/volumen |
 | GPT 5.6 Luna | ~2,050 | ~5,100 | ~10,250 | Modelo OpenAI en Go, buena calidad general |
-| MiniMax M3 | ~3,200 | ~8,000 | ~16,000 | API Anthropic, nueva generación con buen rendimiento |
+| GLM-5.3-Flash | ~1,580 | ~3,950 | ~7,900 | GLM rápido, buen equilibrio entre calidad y throughput |
+| MiniMax M3 | ~3,200 | ~8,000 | ~16,000 | API compatible con OpenAI, nueva generación con buen rendimiento |
 | MiMo-V2.5-Pro | ~3,250 | ~8,150 | ~16,300 | Generación de código complejo, lógica de negocio |
+| LongCat-2.0 | ~11,400 | ~28,600 | ~57,200 | Alto volumen, tareas de bajo riesgo y contexto largo |
 | Qwen3.6 Plus | ~3,300 | ~8,200 | ~16,300 | Tareas generales de codificación, rápido |
-| MiniMax M2.7 | ~3,400 | ~8,500 | ~17,000 | API Anthropic, buena calidad probada |
+| MiniMax M2.7 | ~3,400 | ~8,500 | ~17,000 | API compatible con OpenAI, buena calidad probada |
 | DeepSeek V4 Flash Vision Exp | ~3,800 | ~9,450 | ~18,900 | Flash con visión (experimental) |
 | Qwen3.7 Plus | ~4,300 | ~10,800 | ~21,600 | Versión mejorada de Qwen, más rápido que Qwen3.6 |
 | Hy3 | ~4,300 | ~10,750 | ~21,500 | Alto volumen, buen costo-efectividad |
@@ -50,7 +52,6 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 |--------|--------|------------|---------|------------|
 | MiMo-V2.5 | ~30,100 | ~75,200 | ~150,400 | Ultra económico, contextos enormes, tareas de bajo riesgo |
 | Muse Spark 1.2 Contributor | ~45,300 | ~113,300 | ~226,600 | Máximo volumen (regiones limitadas; datos usados para train) |
-| Ox Alpha Free | ∞ | ∞ | ∞ | Gratis por tiempo limitado |
 
 **Úsalos cuando:** Estés haciendo muchas iteraciones rápidas, prototipado, o tareas de bajo riesgo donde la velocidad importa más que la perfección.
 
@@ -65,6 +66,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 | Modelo | Por qué |
 |--------|---------|
 | DeepSeek V4 Flash | Optimizado para código, máxima velocidad entre modelos de calidad, ~7,600 req/5h |
+| GLM-5.3-Flash | Código rápido y consistente, ~1,580 req/5h |
 | DeepSeek V4 Pro | Versión más pesada de DeepSeek, mejor razonamiento para código complejo |
 | Kimi K2.7 Code | Modelo específicamente optimizado para código, buena relación calidad/volumen |
 | MiMo-V2.5-Pro | Especializado en generación de código, calidad cercana a modelos premium |
@@ -79,7 +81,7 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 |--------|---------|
 | Kimi K3 | Mejor Kimi disponible — ideal para planes complejos y sistemas grandes |
 | GLM-5.3 | Nueva generación GLM, razonamiento de primer nivel |
-| Grok 4.5 | Razonamiento fuerte xAI para diseño y arquitectura |
+| Grok 4.6 | Razonamiento fuerte xAI para diseño y arquitectura |
 | Qwen3.8 Max / Qwen3.7 Max | Razonamiento avanzado con contexto extenso |
 | GLM-5.2 | Excelente para planes de implementación y diseño |
 | Kimi K2.6 | Buen razonamiento y contexto largo sin gastar K3 |
@@ -126,17 +128,17 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 
 ## Estrategia recomendada
 
-- **Tareas complejas/críticas** → Kimi K3, GLM-5.3, Grok 4.5, o Qwen3.8 Max
+- **Tareas complejas/críticas** → Kimi K3, GLM-5.3, Grok 4.6, o Qwen3.8 Max
 - **Día a día** → DeepSeek V4 Flash, Qwen3.7 Plus, Kimi K2.7 Code, o MiniMax M3
 - **Iteraciones rápidas / prototipado** → DeepSeek V4 Flash, Hy3, MiMo-V2.5
 - **Testing** → GLM-5.3 (complejo), Kimi K2.7 Code (TDD), DeepSeek V4 Flash (cobertura)
 - **Documentación** → Kimi K3/GLM-5.3 (crítica), GLM-5.2/GPT 5.6 Luna (manuales), Hy3/DeepSeek V4 Flash (volumen)
-- **Compatibilidad Anthropic** → MiniMax M3 / M2.7, Qwen3.8/3.7 Max/Plus
+- **Compatibilidad Anthropic** → Qwen3.8/3.7 Max/Plus
 - **Visión** → DeepSeek V4 Flash Vision Exp
-- **Planear + ejecutar** → Usa Kimi K3 / GLM-5.3 / Grok 4.5 para el plan, luego cambia a DeepSeek V4 Flash o Qwen3.7 Plus para la ejecución
+- **Planear + ejecutar** → Usa Kimi K3 / GLM-5.3 / Grok 4.6 para el plan, luego cambia a GLM-5.3-Flash, DeepSeek V4 Flash o Qwen3.7 Plus para la ejecución
 - **Un solo modelo para todo** → DeepSeek V4 Pro, Kimi K2.7 Code, o MiniMax M3
-- **Máximo volumen gratis** → Ox Alpha Free (tiempo limitado)
-- **Cuidado con usage $15** → Kimi K3, Grok 4.5, GLM-5.3, Qwen3.8 Max, GPT 5.6 Luna, MiMo-V2.5-Pro, DeepSeek V4 Pro/Vision — se agotan más rápido del cupo mensual efectivo
+- **Máximo volumen gratis** → MiMo-V2.5 o Muse Spark 1.2 Contributor (si están disponibles en tu región)
+- **Cuidado con usage $15** → Kimi K3, Grok 4.6, GLM-5.3, Qwen3.8 Max, GPT 5.6 Luna, MiMo-V2.5-Pro, DeepSeek V4 Pro/Vision — se agotan más rápido del cupo mensual efectivo
 
 ---
 
@@ -144,15 +146,18 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 
 | Modelo | Entrada | Salida | Cache Read | Cache Write | Usage incl. |
 |--------|---------|--------|------------|-------------|-------------|
-| Grok 4.5 | $2.00 | $6.00 | $0.30 | - | $15 |
+| Grok 4.6 (≤200K) | $2.00 | $6.00 | $0.50 | - | $15 |
+| Grok 4.6 (>200K) | $4.00 | $12.00 | $1.00 | - | $15 |
 | GPT 5.6 Luna (≤272K) | $0.20 | $1.20 | $0.02 | $0.25 | $15 |
 | GPT 5.6 Luna (>272K) | $0.40 | $1.80 | $0.04 | $0.50 | $15 |
 | GLM-5.3 | $1.40 | $4.40 | $0.26 | - | $15 |
+| GLM-5.3-Flash | $0.15 | $0.50 | $0.03 | - | $15 |
 | GLM-5.2 | $1.40 | $4.40 | $0.26 | - | $60 |
 | GLM-5.1 | $1.40 | $4.40 | $0.26 | - | $60 |
 | Kimi K3 | $3.00 | $15.00 | $0.30 | - | $15 |
 | Kimi K2.7 Code | $0.95 | $4.00 | $0.19 | - | $60 |
 | Kimi K2.6 | $0.95 | $4.00 | $0.16 | - | $60 |
+| LongCat-2.0 | $0.30 | $1.20 | $0.006 | - | $60 |
 | MiMo-V2.5 | $0.14 | $0.28 | $0.0028 | - | $60 |
 | MiMo-V2.5-Pro | $0.435 | $0.87 | $0.003625 | - | $15 |
 | MiniMax M3 | $0.30 | $1.20 | $0.06 | - | $60 |
@@ -171,27 +176,27 @@ Suscripción: **$10/mes** ($5 primer mes) | Límites: $12/5h, $30/semana, $60/me
 | DeepSeek V4 Flash Vision Exp (Off-Peak) | $0.22 | $0.66 | $0.007 | - | $15 |
 | DeepSeek V4 Flash Vision Exp (Peak) | $0.44 | $1.32 | $0.014 | - | $15 |
 | Hy3 | $0.14 | $0.58 | $0.035 | - | $60 |
-| Ox Alpha Free | - | - | - | - | - |
 
-**DeepSeek peak hours:** 01:00–04:00 y 06:00–10:00 UTC; el resto es Off-Peak.
+**DeepSeek peak hours:** 01:00–04:00 y 06:00–10:00 UTC, de lunes a viernes; fines de semana y el resto del horario son Off-Peak.
 
 ---
 
 ## Notas adicionales
 
 - Si te quedás sin límite, activá **"Use balance"** en la consola para usar créditos de Zen como respaldo
-- Los modelos están hosteados en **US, EU y Singapur** para acceso global estable
-- La mayoría de proveedores siguen **zero-retention (0 days)** y no usan tus datos para entrenamiento
+- Los modelos están hosteados en **US**; los proveedores siguen una política de zero-retention
+- La mayoría de modelos no usa tus datos para entrenamiento y tiene retención de **0 días**
 - **Excepciones de privacy:**
-  - Grok 4.5 y GPT 5.6 Luna: retención 30 días (abuse monitoring / features stateful)
-  - Muse Spark 1.2 Contributor: **SÍ usa datos para train** (no es ZDR)
+  - Grok 4.6 y GPT 5.6 Luna: retención 30 días (abuse monitoring / features stateful)
+  - Muse Spark 1.2 Contributor: **SÍ usa datos para train** (no es ZDR; regiones limitadas)
   - DeepSeek: ZDR renovado mensualmente; válido hasta **31 de agosto de 2026**
 - Solo **un miembro por workspace** puede suscribirse a Go
 - La lista de modelos puede cambiar a medida que se agregan nuevos
 - **API style:**
-  - MiniMax M3/M2.7 y Qwen (3.8/3.7/3.6): API estilo Anthropic (`@ai-sdk/anthropic`)
-  - Grok 4.5, GPT 5.6 Luna, Muse Spark: OpenAI Responses API (`@ai-sdk/openai`)
-  - Resto: OpenAI-compatible chat completions
+   - Qwen (3.8/3.7/3.6): API Messages (`@ai-sdk/anthropic`)
+   - MiniMax M3/M2.7: API compatible con OpenAI (`@ai-sdk/openai-compatible`)
+   - Grok 4.6, GPT 5.6 Luna y Muse Spark: OpenAI Responses API (`@ai-sdk/openai`)
+   - GLM, Kimi, LongCat, MiMo, DeepSeek y Hy3: OpenAI-compatible chat completions
 - Qwen3.7/3.6 Plus y GPT 5.6 Luna tienen precios diferentes según el tamaño de contexto
 - Model ID en config: `opencode-go/<model-id>` (ej. `opencode-go/kimi-k3`)
 - Catálogo live: `https://opencode.ai/zen/go/v1/models`

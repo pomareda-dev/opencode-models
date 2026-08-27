@@ -2,7 +2,7 @@
 
 > Guía práctica sobre los modelos gratuitos disponibles en [OpenCode Zen](https://opencode.ai/docs/zen/) y cómo elegir el más adecuado según la tarea: planeamiento, código, refactorización y tests.
 >
-> Última actualización: agosto de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
+> Última actualización: 26 de agosto de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 1. ¿Qué es OpenCode Zen?
 
-OpenCode Zen es la pasarela (gateway) de modelos curada por el equipo de OpenCode. A diferencia de usar un modelo vía OpenRouter u otro intermediario, en Zen cada combinación modelo/proveedor ha sido probada y benchmarked para funcionar bien como **agente de código** (tool calling, ediciones multi-archivo, etc.).
+OpenCode Zen es la pasarela (gateway) de modelos curada por el equipo de OpenCode. A diferencia de usar un modelo vía OpenRouter u otro intermediario, en Zen cada combinación modelo/proveedor ha sido probada y evaluada para funcionar bien como **agente de código** (tool calling, ediciones multi-archivo, etc.).
 
 Los modelos gratuitos (`Free`) cuestan **$0 en input, output y lectura de caché**, pero existen porque los equipos detrás de ellos recopilan feedback para mejorarlos. Son ideales para experimentar sin gastar créditos.
 
@@ -30,14 +30,24 @@ Los modelos gratuitos (`Free`) cuestan **$0 en input, output y lectura de caché
 | Modelo | Model ID | Familia / Origen | Tipo | Política de privacidad |
 |---|---|---|---|---|
 | **Big Pickle** | `big-pickle` | Stealth (no revelada) | Modelo misterioso de gama alta | ⚠️ Los datos pueden usarse para mejorar el modelo durante el periodo gratuito |
-| **Ox Alpha Free** | `x-preview-f-free` | Stealth (no revelada) | Modelo misterioso de gama alta | ✅ **Zero-retention**: no usan tus datos para entrenar |
 | **MiMo-V2.5 Free** | `mimo-v2.5-free` | MiMo (Xiaomi) | Razonamiento eficiente | ⚠️ Los datos se recopilan para mejorar el modelo |
 | **Hy3 Free** | `hy3-free` | Hunyuan 3 (Tencent) | Generalista grande | ⚠️ Los datos se recopilan para mejorar el modelo |
 | **Nemotron 3 Ultra Free** | `nemotron-3-ultra-free` | NVIDIA | Razonamiento profundo (pesado) | ⚠️ Endpoint trial de NVIDIA: no enviar datos confidenciales; las sesiones se registran |
 | **Nemotron 3.5 Lightning Free** | `nemotron-3.5-lightning-free` | NVIDIA | Variante ligera/rápida | ⚠️ Endpoint trial de NVIDIA: mismas condiciones que Ultra |
 | **Muse Spark 1.2 Contributor Free** | `muse-spark-1.2-contributor-free` | Meta | Generalista | ⚠️⚠️ **Tus prompts y respuestas se usan para entrenar futuros modelos de Meta** |
 
-Todos usan el endpoint `https://opencode.ai/zen/v1/chat/completions`, compatible con `@ai-sdk/openai-compatible`.
+Los modelos no usan todos el mismo endpoint. El ID de configuración siempre es `opencode/<model-id>`, pero el endpoint depende de la familia: Responses para GPT/Grok/Muse, Messages para Claude/Qwen, endpoints Google para Gemini y chat completions compatibles con OpenAI para el resto.
+
+El catálogo completo, los precios y los metadatos se pueden consultar en `https://opencode.ai/zen/v1/models`.
+
+### Privacidad vigente
+
+Todos los modelos se sirven desde infraestructura en **US**. La política general es zero-retention y no entrenamiento, con estas excepciones documentadas:
+
+- **Big Pickle**, **MiMo-V2.5 Free** y **Hy3 Free**: durante el periodo gratuito pueden recopilar datos para mejorar el modelo.
+- **Nemotron 3 Ultra/Lightning Free**: endpoints trial de NVIDIA; las sesiones se registran y no deben recibir datos personales o confidenciales.
+- **OpenAI y Anthropic**: sus APIs pueden retener solicitudes hasta 30 días según sus políticas.
+- **Muse Spark 1.2 Contributor Free**: permite usar prompts y respuestas para entrenar futuros modelos de Meta.
 
 ---
 
@@ -49,14 +59,14 @@ Este es el criterio que deberías ponderar primero, porque el precio es igual ($
 
 | Nivel | Modelos | Implicación |
 |---|---|---|
-| 🟢 Más seguro | **Ox Alpha Free** | Zero-retention explícito. El proveedor no retiene ni entrena con tus datos. Único gratuito apto para código sensible. |
+| 🟢 Más seguro | **Ninguno** | Los modelos gratuitos actuales tienen condiciones de recopilación, trial o entrenamiento. No son aptos para código sensible. |
 | 🟡 Uso para mejora | Big Pickle, MiMo-V2.5, Hy3 | Tus conversaciones pueden revisarse/usarse para mejorar el modelo durante el periodo gratuito. Evita secretos (API keys, credenciales, lógica propietaria crítica). |
 | 🔴 Revisión activa | Nemotron 3 Ultra / Lightning | Endpoints *trial* de NVIDIA: uso registrado por seguridad, términos de prueba. No enviar datos personales ni confidenciales. |
 | 🔴 Entrenamiento directo | Muse Spark 1.2 Contributor | A cambio de la gratuidad, **cedes tus prompts/completions como datos de entrenamiento** para futuros modelos de Meta. |
 
 ### 3.2 Estilo del modelo
 
-- **Stealth / misteriosos (Big Pickle, Ox Alpha)**: identidad no revelada. En Zen este tipo de modelos suelen ser candidatos a gama alta en evaluación, con buen rendimiento agéntico general. Suelen ser la apuesta segura como "modelo principal".
+- **Stealth / misterioso (Big Pickle)**: identidad no revelada. Sigue disponible gratis por tiempo limitado y puede cambiar sin aviso.
 - **Razonadores (MiMo-V2.5, Nemotron 3 Ultra)**: priorizan cadenas de razonamiento antes de responder. Mejores en problemas que requieren planear o deducir, a costa de mayor latencia y más tokens de salida.
 - **Ligeros/rápidos (Nemotron 3.5 Lightning)**: optimizados para baja latencia. Ideales para ciclos cortos y tareas repetitivas, menos profundos en problemas grandes.
 - **Generalistas grandes (Hy3)**: buen equilibrio entre conocimiento amplio, redacción y código.
@@ -73,9 +83,9 @@ Este es el criterio que deberías ponderar primero, porque el precio es igual ($
 | Tarea | Primera opción | Alternativa | Evitar |
 |---|---|---|---|
 | 🗺️ Planeamiento | **Nemotron 3 Ultra Free** | Big Pickle, MiMo-V2.5 Free | Nemotron 3.5 Lightning |
-| 💻 Escritura de código | **Big Pickle** | Ox Alpha Free, Hy3 Free | — |
+| 💻 Escritura de código | **Big Pickle** | Hy3 Free, MiMo-V2.5 Free | — |
 | ♻️ Refactorización | **Big Pickle** | Nemotron 3 Ultra Free, Hy3 Free | Nemotron 3.5 Lightning |
-| 🧪 Tests | **Ox Alpha Free** | Nemotron 3.5 Lightning Free | — |
+| 🧪 Tests | **Big Pickle** | Nemotron 3.5 Lightning Free | — |
 | 📝 Documentación / guías / manuales | **Hy3 Free** | Big Pickle, MiMo-V2.5 Free | Nemotron 3.5 Lightning |
 
 ### 4.1 Planeamiento (arquitectura, descomposición de tareas, diseño)
@@ -93,7 +103,7 @@ Evita: **Lightning**, que sacrifica profundidad por velocidad, justo lo contrari
 **Recomendado: `big-pickle`** — Al ser un stealth model de gama alta en evaluación gratuita, tiende al mejor rendimiento agéntico general (seguir instrucciones, usar herramientas, editar varios archivos coherentemente).
 
 Alternativas:
-- **Ox Alpha Free**: rendimiento comparable y la mejor privacidad; elige esta opción primero si tu código es sensible.
+- **MiMo-V2.5 Free**: buen razonamiento para diseñar casos límite; no lo uses con datos sensibles.
 - **Hy3 Free**: sólido como generalista cuando la tarea mezcla código con explicaciones o documentación.
 
 ### 4.3 Refactorización (reestructurar sin romper comportamiento)
@@ -108,7 +118,7 @@ Consejo: para refactors, pide primero un **plan** (con el modelo de planeamiento
 
 ### 4.4 Tests (unitarios, integración, TDD)
 
-**Recomendado: `x-preview-f-free` (Ox Alpha Free)** — Generar tests es un ciclo iterativo de escribir → correr → corregir, con muchos contextos repetidos. Un modelo de gama alta con zero-retention es ideal: rápido en iterar y seguro si tus tests exponen estructura interna del proyecto.
+**Recomendado: `big-pickle`** — Generar tests es un ciclo iterativo de escribir → correr → corregir, con muchos contextos repetidos. Es un modelo generalista de alta capacidad agéntica; aun así, no envíes código sensible durante su periodo gratuito.
 
 Alternativas:
 - **Nemotron 3.5 Lightning Free**: aquí sí brilla su velocidad; perfecto para generar lotes de tests unitarios rutinarios o casos borde a partir de una función ya definida.
@@ -166,16 +176,23 @@ opencode -m opencode/nemotron-3-ultra-free
 # 2. Implementar / refactorizar
 opencode -m opencode/big-pickle
 # 3. Testear e iterar
-opencode -m opencode/x-preview-f-free
+opencode -m opencode/big-pickle
 ```
 
 ---
 
 ## 6. Buenas prácticas y advertencias
 
-1. **No envíes secretos a ningún modelo gratuito** salvo quizá Ox Alpha Free (zero-retention). Esto incluye `.env`, API keys, datos de clientes y algoritmos propietarios.
+1. **No envíes secretos a ningún modelo gratuito**. Esto incluye `.env`, API keys, datos de clientes y algoritmos propietarios.
 2. **Son temporales**: todos los modelos gratuitos pueden desaparecer. No construyas flujos de CI críticos dependiendo solo de uno.
 3. **Verifica siempre el código generado**, especialmente en refactors: ejecuta tu suite de tests después de cada cambio.
 4. **Combina modelos por fase** (plan → code → test) en vez de usar uno solo para todo: es gratis y obtienes lo mejor de cada uno.
 5. Si un modelo gratuito responde mal en tu dominio (p. ej. legacy PHP/Laravel en este proyecto), prueba otro de la lista antes de pagar por uno de pago.
 6. Consulta siempre la [documentación oficial de Zen](https://opencode.ai/docs/zen/) para ver la lista vigente, precios y fechas de deprecación.
+
+### Cambios relevantes del catálogo (26/08/2026)
+
+- Zen incorpora modelos GPT 5.6/5.5/5.4, GPT Codex, Claude Opus/Sonnet, Gemini 3.x, Grok 4.6 y Grok Build 0.1, además de nuevas variantes Qwen, GLM, Kimi y MiniMax.
+- `glm-5`, `kimi-k2.5`, `minimax-m2.5` y varios modelos antiguos de GPT Codex están deprecados o tienen fecha de retirada publicada. No los uses para configuraciones nuevas.
+- Zen ofrece auto-recarga: si el saldo baja de $5, puede recargar automáticamente $20. Se puede desactivar o ajustar desde la consola.
+- En workspaces, los administradores pueden restringir modelos y definir límites mensuales por miembro.

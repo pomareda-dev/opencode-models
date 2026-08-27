@@ -1,7 +1,7 @@
 # Perfiles SDD para gentle-orchestrator (OpenCode Go)
 
-> **Información actualizada:** 22 de agosto de 2026  
-> Modelos: [opencode-models.md](./opencode-models.md) · [OpenCode Go docs](https://opencode.ai/docs/go/)  
+> **Información actualizada:** 26 de agosto de 2026
+> Modelos: [modelos-opencode-go.md](./modelos-opencode-go.md) · [OpenCode Go docs](https://opencode.ai/docs/go/)
 > Runtime: [gentle-ai OpenCode SDD Profiles](https://github.com/Gentleman-Programming/gentle-ai/blob/main/docs/opencode-profiles.md)
 
 Tres perfiles listos para `gentle-orchestrator` / multi-mode OpenCode:
@@ -21,7 +21,7 @@ En OpenCode (Tab):
 | balanced | `sdd-orchestrator-balanced` |
 | cheap | `sdd-orchestrator-cheap` |
 
-Cada perfil genera **11 agentes**: 1 conductor + 10 fases SDD. Los prompts se comparten; solo cambia el `model`.
+Cada perfil nombrado genera **11 agentes**: 1 conductor (`sdd-orchestrator-{name}`) + 10 subagentes de fase (`sdd-{phase}-{name}`). El conductor base `gentle-orchestrator` se mantiene aparte. Los prompts de fase se comparten; normalmente solo cambia el `model`.
 
 Formato de model ID: `opencode-go/<model-id>`.
 
@@ -43,7 +43,31 @@ Formato de model ID: `opencode-go/<model-id>`.
 | **sdd-archive** | Merge deltas, cierre | Bajo riesgo, barato |
 | **sdd-onboard** | Ingesta amplia del repo | Contexto enorme + volumen |
 
-Regla: **planear caro, ejecutar barato** — propose/design/verify arriba; apply/explore/archive abajo.
+Regla: **planear caro, ejecutar barato** — propose/design/verify arriba; apply/explore/archive abajo. Las asignaciones son recomendaciones, no una garantía de calidad: el catálogo y sus límites cambian.
+
+## Cambios operativos de OpenCode SDD
+
+### Subagentes en segundo plano nativos
+
+OpenCode SDD usa subagentes nativos mediante el permiso `task`; Gentle AI ya no instala por defecto el plugin legado `background-agents.ts`. El comportamiento se controla con `auto`, `on` u `off`:
+
+```bash
+gentle-ai install --agent opencode --component sdd --opencode-background-subagents=on
+gentle-ai sync --opencode-background-subagents=off
+```
+
+También podés usar `GENTLE_AI_OPENCODE_BACKGROUND_SUBAGENTS=auto|on|off`. La prioridad es flag CLI, variable de entorno, elección guardada y, por último, `auto`. Los trabajos en segundo plano son locales al proceso, no sobreviven a un reinicio y no aíslan el sistema de archivos: no los uses para fases dependientes ni ejecutes escritores en paralelo en el mismo worktree.
+
+### Variantes de esfuerzo de razonamiento
+
+Cuando un modelo expone variantes (`low`, `medium`, `high`, `xhigh`), el selector de modelos permite fijar el nivel de esfuerzo. Las variantes disponibles se refrescan mediante el plugin `model-variants` en `~/.gentle-ai/cache/model-variants.json`. Después de sincronizar, iniciá OpenCode una vez para llenar la caché y volvé a abrir el selector. Si la caché no existe, se usa el esfuerzo predeterminado del proveedor.
+
+### Estrategias de perfiles
+
+- `generated-multi` es el modo clásico: conserva `gentle-orchestrator`, genera cada `sdd-orchestrator-{name}` y sus 10 subagentes con sufijo en `opencode.json`.
+- `external-single-active` se activa si detecta perfiles en `~/.config/opencode/profiles/*.json`; mantiene los assets SDD base y deja que el gestor externo controle el perfil activo.
+
+Podés forzar una estrategia con `--sdd-profile-strategy generated-multi` o `--sdd-profile-strategy external-single-active`.
 
 ---
 
@@ -270,7 +294,7 @@ O vía TUI: `gentle-ai` → **OpenCode SDD Profiles** → Create (`top` / `balan
 
 ## Notas operativas (gentle-ai + OpenCode Go)
 
-1. **Prerrequisito:** `/connect` → OpenCode Go, y `opencode models --refresh` antes de crear perfiles.
+1. **Prerrequisito:** `/connect` → OpenCode Go, y `opencode models` para comprobar el catálogo antes de crear perfiles.
 2. **Base conductor:** `gentle-orchestrator` (no se borra). Named profiles = `sdd-orchestrator-{name}`.
 3. **Legacy:** `sdd-orchestrator` se migra a `gentle-orchestrator` en sync.
 4. **Solo un subscriber Go por workspace.**
