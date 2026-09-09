@@ -1,6 +1,6 @@
 # Perfiles SDD para gentle-orchestrator (OpenCode Go)
 
-> **Información actualizada:** 26 de agosto de 2026
+> **Información actualizada:** 9 de septiembre de 2026
 > Modelos: [modelos-opencode-go.md](./modelos-opencode-go.md) · [OpenCode Go docs](https://opencode.ai/docs/go/)
 > Runtime: [gentle-ai OpenCode SDD Profiles](https://github.com/Gentleman-Programming/gentle-ai/blob/main/docs/opencode-profiles.md)
 
@@ -112,8 +112,8 @@ gentle-ai sync \
 
 | Slot | Alternativa |
 |------|-------------|
-| orchestrator | `opencode-go/kimi-k3` o `opencode-go/grok-4.5` |
-| sdd-design | `opencode-go/grok-4.5` o `opencode-go/glm-5.3` |
+| orchestrator | `opencode-go/kimi-k3` o `opencode-go/grok-4.6` |
+| sdd-design | `opencode-go/grok-4.6` o `opencode-go/glm-5.3` |
 | sdd-apply | `opencode-go/deepseek-v4-pro` (más razonamiento, menos “code-tuned”) |
 | sdd-propose | `opencode-go/glm-5.3` (si K3 se agota) |
 
@@ -205,14 +205,14 @@ gentle-ai sync \
   --profile-phase cheap:sdd-onboard:opencode-go/mimo-v2.5
 ```
 
-**Modo ultra-barato (opcional):** si `ox-alpha-free` sigue gratis, podés poner archive/onboard/explore ahí:
+**Modo ultra-barato (opcional):** `omen-alpha` es el nuevo modelo de alto volumen en Go (~11,600 req/5h, usage $100). Podés poner archive/onboard/explore ahí:
 
 ```bash
---profile-phase cheap:sdd-archive:opencode-go/ox-alpha-free \
---profile-phase cheap:sdd-onboard:opencode-go/ox-alpha-free
+--profile-phase cheap:sdd-archive:opencode-go/omen-alpha \
+--profile-phase cheap:sdd-onboard:opencode-go/omen-alpha
 ```
 
-⚠️ No uses `muse-spark-1.2-contributor` en perfiles de trabajo real si te importa privacy (entrena con tus prompts).
+⚠️ No uses `muse-spark-1.2-contributor` ni `muse-spark-1.3-contributor` en perfiles de trabajo real si te importa privacy (entrenan con tus prompts).
 
 ---
 
@@ -299,10 +299,11 @@ O vía TUI: `gentle-ai` → **OpenCode SDD Profiles** → Create (`top` / `balan
 3. **Legacy:** `sdd-orchestrator` se migra a `gentle-orchestrator` en sync.
 4. **Solo un subscriber Go por workspace.**
 5. **DeepSeek Peak hours** (01:00–04:00 y 06:00–10:00 UTC) cuestan el doble → preferí Flash/Pro off-peak si podés.
-6. **Usage $15** (K3, GLM-5.3, Qwen3.8 Max, Grok, DeepSeek Pro, MiMo Pro…): no los pongas en apply masivo.
+6. **Usage $15** (K3, GLM-5.3, GLM-5.3-Flash, Qwen3.8 Max, Grok, GPT 5.6 Luna, DeepSeek Pro/Vision, MiMo Pro…): no los pongas en apply masivo.
 7. **Judgment Day** (`jd-judge-a`, `jd-judge-b`, `jd-fix-agent`) es independiente de estos perfiles; se configura aparte en el model picker de gentle-ai.
 8. **Strategy sync:** `generated-multi` (default) escribe los 11 agentes en `opencode.json`. Si usás profiles externos en `~/.config/opencode/profiles/*.json`, gentle-ai pasa a `external-single-active`.
 9. Si te quedás sin límite Go: activá **Use balance** (Zen) o bajá a `cheap` / free models.
+10. **Modelos nuevos en Go (sep 2026)** que podés rotar en los perfiles: `qwen3.8-flash` (~5,400 req/5h), `hy4-preview` (~1,350 req/5h), `omen-alpha` (~11,600 req/5h) y `muse-spark-1.3-contributor`. Ojo: Qwen3.7 Max bajó su usage de $60 a $30 y sus requests (~170 req/5h).
 
 ---
 

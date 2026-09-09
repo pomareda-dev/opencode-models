@@ -2,7 +2,7 @@
 
 > Guía práctica sobre los modelos gratuitos disponibles en [OpenCode Zen](https://opencode.ai/docs/zen/) y cómo elegir el más adecuado según la tarea: planeamiento, código, refactorización y tests.
 >
-> Última actualización: 26 de agosto de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
+> Última actualización: 9 de septiembre de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
 
 ---
 
@@ -31,10 +31,10 @@ Los modelos gratuitos (`Free`) cuestan **$0 en input, output y lectura de caché
 |---|---|---|---|---|
 | **Big Pickle** | `big-pickle` | Stealth (no revelada) | Modelo misterioso de gama alta | ⚠️ Los datos pueden usarse para mejorar el modelo durante el periodo gratuito |
 | **MiMo-V2.5 Free** | `mimo-v2.5-free` | MiMo (Xiaomi) | Razonamiento eficiente | ⚠️ Los datos se recopilan para mejorar el modelo |
-| **Hy3 Free** | `hy3-free` | Hunyuan 3 (Tencent) | Generalista grande | ⚠️ Los datos se recopilan para mejorar el modelo |
+| **Ling 3.0 Flash Fin Free** | `ling-3.0-flash-fin-free` | Ling (Ant Group) | Variante flash, orientada a finanzas | ⚠️ Los datos se recopilan para mejorar el modelo |
 | **Nemotron 3 Ultra Free** | `nemotron-3-ultra-free` | NVIDIA | Razonamiento profundo (pesado) | ⚠️ Endpoint trial de NVIDIA: no enviar datos confidenciales; las sesiones se registran |
 | **Nemotron 3.5 Lightning Free** | `nemotron-3.5-lightning-free` | NVIDIA | Variante ligera/rápida | ⚠️ Endpoint trial de NVIDIA: mismas condiciones que Ultra |
-| **Muse Spark 1.2 Contributor Free** | `muse-spark-1.2-contributor-free` | Meta | Generalista | ⚠️⚠️ **Tus prompts y respuestas se usan para entrenar futuros modelos de Meta** |
+| **Muse Spark 1.3 Contributor Free** | `muse-spark-1.3-contributor-free` | Meta | Generalista | ⚠️⚠️ **Tus prompts y respuestas se usan para entrenar futuros modelos de Meta** |
 
 Los modelos no usan todos el mismo endpoint. El ID de configuración siempre es `opencode/<model-id>`, pero el endpoint depende de la familia: Responses para GPT/Grok/Muse, Messages para Claude/Qwen, endpoints Google para Gemini y chat completions compatibles con OpenAI para el resto.
 
@@ -44,10 +44,10 @@ El catálogo completo, los precios y los metadatos se pueden consultar en `https
 
 Todos los modelos se sirven desde infraestructura en **US**. La política general es zero-retention y no entrenamiento, con estas excepciones documentadas:
 
-- **Big Pickle**, **MiMo-V2.5 Free** y **Hy3 Free**: durante el periodo gratuito pueden recopilar datos para mejorar el modelo.
+- **Big Pickle**, **MiMo-V2.5 Free** y **Ling 3.0 Flash Fin Free**: durante el periodo gratuito pueden recopilar datos para mejorar el modelo.
 - **Nemotron 3 Ultra/Lightning Free**: endpoints trial de NVIDIA; las sesiones se registran y no deben recibir datos personales o confidenciales.
 - **OpenAI y Anthropic**: sus APIs pueden retener solicitudes hasta 30 días según sus políticas.
-- **Muse Spark 1.2 Contributor Free**: permite usar prompts y respuestas para entrenar futuros modelos de Meta.
+- **Muse Spark 1.3 Contributor Free**: permite usar prompts y respuestas para entrenar futuros modelos de Meta.
 
 ---
 
@@ -60,17 +60,16 @@ Este es el criterio que deberías ponderar primero, porque el precio es igual ($
 | Nivel | Modelos | Implicación |
 |---|---|---|
 | 🟢 Más seguro | **Ninguno** | Los modelos gratuitos actuales tienen condiciones de recopilación, trial o entrenamiento. No son aptos para código sensible. |
-| 🟡 Uso para mejora | Big Pickle, MiMo-V2.5, Hy3 | Tus conversaciones pueden revisarse/usarse para mejorar el modelo durante el periodo gratuito. Evita secretos (API keys, credenciales, lógica propietaria crítica). |
+| 🟡 Uso para mejora | Big Pickle, MiMo-V2.5, Ling 3.0 Flash Fin | Tus conversaciones pueden revisarse/usarse para mejorar el modelo durante el periodo gratuito. Evita secretos (API keys, credenciales, lógica propietaria crítica). |
 | 🔴 Revisión activa | Nemotron 3 Ultra / Lightning | Endpoints *trial* de NVIDIA: uso registrado por seguridad, términos de prueba. No enviar datos personales ni confidenciales. |
-| 🔴 Entrenamiento directo | Muse Spark 1.2 Contributor | A cambio de la gratuidad, **cedes tus prompts/completions como datos de entrenamiento** para futuros modelos de Meta. |
+| 🔴 Entrenamiento directo | Muse Spark 1.3 Contributor | A cambio de la gratuidad, **cedes tus prompts/completions como datos de entrenamiento** para futuros modelos de Meta. |
 
 ### 3.2 Estilo del modelo
 
 - **Stealth / misterioso (Big Pickle)**: identidad no revelada. Sigue disponible gratis por tiempo limitado y puede cambiar sin aviso.
 - **Razonadores (MiMo-V2.5, Nemotron 3 Ultra)**: priorizan cadenas de razonamiento antes de responder. Mejores en problemas que requieren planear o deducir, a costa de mayor latencia y más tokens de salida.
-- **Ligeros/rápidos (Nemotron 3.5 Lightning)**: optimizados para baja latencia. Ideales para ciclos cortos y tareas repetitivas, menos profundos en problemas grandes.
-- **Generalistas grandes (Hy3)**: buen equilibrio entre conocimiento amplio, redacción y código.
-- **Contributor (Muse Spark 1.2)**: mismo modelo de pago que la versión normal, pero gratis a cambio de tus datos. Rendimiento de generalista moderno.
+- **Ligeros/rápidos (Nemotron 3.5 Lightning, Ling 3.0 Flash Fin)**: optimizados para baja latencia. Ideales para ciclos cortos y tareas repetitivas, menos profundos en problemas grandes.
+- **Contributor (Muse Spark 1.3)**: mismo modelo de pago que la versión normal, pero gratis a cambio de tus datos. Rendimiento de generalista moderno.
 
 ---
 
@@ -83,10 +82,10 @@ Este es el criterio que deberías ponderar primero, porque el precio es igual ($
 | Tarea | Primera opción | Alternativa | Evitar |
 |---|---|---|---|
 | 🗺️ Planeamiento | **Nemotron 3 Ultra Free** | Big Pickle, MiMo-V2.5 Free | Nemotron 3.5 Lightning |
-| 💻 Escritura de código | **Big Pickle** | Hy3 Free, MiMo-V2.5 Free | — |
-| ♻️ Refactorización | **Big Pickle** | Nemotron 3 Ultra Free, Hy3 Free | Nemotron 3.5 Lightning |
+| 💻 Escritura de código | **Big Pickle** | MiMo-V2.5 Free, Muse Spark 1.3 Contributor Free | — |
+| ♻️ Refactorización | **Big Pickle** | Nemotron 3 Ultra Free | Nemotron 3.5 Lightning |
 | 🧪 Tests | **Big Pickle** | Nemotron 3.5 Lightning Free | — |
-| 📝 Documentación / guías / manuales | **Hy3 Free** | Big Pickle, MiMo-V2.5 Free | Nemotron 3.5 Lightning |
+| 📝 Documentación / guías / manuales | **Big Pickle** | MiMo-V2.5 Free | Nemotron 3.5 Lightning |
 
 ### 4.1 Planeamiento (arquitectura, descomposición de tareas, diseño)
 
@@ -104,7 +103,7 @@ Evita: **Lightning**, que sacrifica profundidad por velocidad, justo lo contrari
 
 Alternativas:
 - **MiMo-V2.5 Free**: buen razonamiento para diseñar casos límite; no lo uses con datos sensibles.
-- **Hy3 Free**: sólido como generalista cuando la tarea mezcla código con explicaciones o documentación.
+- **Muse Spark 1.3 Contributor Free**: generalista moderno; solo si no te importa ceder tus datos para entrenamiento.
 
 ### 4.3 Refactorización (reestructurar sin romper comportamiento)
 
@@ -112,7 +111,7 @@ Alternativas:
 
 Alternativas:
 - **Nemotron 3 Ultra Free**: muy cuidadoso y metódico; buena segunda opción para refactors grandes y delicados, aunque más lento.
-- **Hy3 Free**: adecuado para refactors locales (un módulo, una clase).
+- **Ling 3.0 Flash Fin Free**: para refactors locales y rápidos, con la advertencia de que es una variante flash (menos profundidad).
 
 Consejo: para refactors, pide primero un **plan** (con el modelo de planeamiento), revísalo, y luego ejecuta con el modelo de código.
 
@@ -126,15 +125,15 @@ Alternativas:
 
 ### 4.5 Documentación, guías y manuales (READMEs, onboarding, arquitectura)
 
-**Recomendado: `hy3-free`** — Es un generalista grande con buen equilibrio entre redacción, conocimiento amplio y código. La documentación técnica exige explicar conceptos con claridad, mantener estructura y consistencia a lo largo de un texto largo, y combinar prosa con bloques de código: justo el perfil de un generalista sólido.
+**Recomendado: `big-pickle`** — Tras la retirada de Hy3 Free, Big Pickle es la mejor opción gratuita para documentación: es un modelo de gama alta que mantiene estructura y consistencia en textos largos y combina prosa con bloques de código.
 
 Alternativas:
-- **Big Pickle**: gama alta; mejor cuando la guía mezcla mucha referencia al repo y requiere seguir instrucciones complejas de formato/estilo.
 - **MiMo-V2.5 Free**: su razonamiento ayuda a estructurar manuales con jerarquía clara (secciones, pasos, casos de uso) y a anticipar dudas del lector.
+- **Ling 3.0 Flash Fin Free**: para documentación corta o autogenerada de bajo riesgo (referencias, changelogs), aprovechando su baja latencia.
 
 Evita: **Nemotron 3.5 Lightning**, que privilegia velocidad sobre profundidad narrativa; la documentación suele quedar superficial o desordenada.
 
-Consejo: si la guía es larga o de varios archivos, pide primero un **índice/estructura** (con el modelo de planeamiento `nemotron-3-ultra-free`), revísalo, y luego redacta cada sección con `hy3-free` o `big-pickle` para mantener consistencia.
+Consejo: si la guía es larga o de varios archivos, pide primero un **índice/estructura** (con el modelo de planeamiento `nemotron-3-ultra-free`), revísalo, y luego redacta cada sección con `big-pickle` para mantener consistencia.
 
 ---
 
@@ -190,9 +189,10 @@ opencode -m opencode/big-pickle
 5. Si un modelo gratuito responde mal en tu dominio (p. ej. legacy PHP/Laravel en este proyecto), prueba otro de la lista antes de pagar por uno de pago.
 6. Consulta siempre la [documentación oficial de Zen](https://opencode.ai/docs/zen/) para ver la lista vigente, precios y fechas de deprecación.
 
-### Cambios relevantes del catálogo (26/08/2026)
+### Cambios relevantes del catálogo (09/09/2026)
 
-- Zen incorpora modelos GPT 5.6/5.5/5.4, GPT Codex, Claude Opus/Sonnet, Gemini 3.x, Grok 4.6 y Grok Build 0.1, además de nuevas variantes Qwen, GLM, Kimi y MiniMax.
-- `glm-5`, `kimi-k2.5`, `minimax-m2.5` y varios modelos antiguos de GPT Codex están deprecados o tienen fecha de retirada publicada. No los uses para configuraciones nuevas.
+- Zen incorpora **GPT 6 Astra** (flagship), **GPT 5.6 Sol** y **GPT 5.6 Terra**, además de **Claude Fable 5.1/5**, **Claude Opus 5** y **Claude Sonnet 5**. GPT 5.6 Sol tiene un descuento del 50% vigente hasta el 18 de septiembre de 2026.
+- **Modelos gratuitos:** se suma **Ling 3.0 Flash Fin Free**; se retira **Hy3 Free**; **Muse Spark 1.2 Contributor Free** es reemplazado por **Muse Spark 1.3 Contributor Free**.
+- **Deprecados** (no usar en configuraciones nuevas): MiniMax M2.5 (5 ago), Kimi K2.5 (5 ago), Claude Opus 4.1 (5 ago), las variantes GPT Codex (23 jul), GLM 5 (14 may) y Gemini 3 Pro (9 mar).
 - Zen ofrece auto-recarga: si el saldo baja de $5, puede recargar automáticamente $20. Se puede desactivar o ajustar desde la consola.
-- En workspaces, los administradores pueden restringir modelos y definir límites mensuales por miembro.
+- En workspaces, los administradores pueden restringir modelos y definir límites mensuales por miembro; también se puede traer tu propia API key de OpenAI o Anthropic.
