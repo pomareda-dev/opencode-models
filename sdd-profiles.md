@@ -1,6 +1,6 @@
 # Perfiles SDD para gentle-orchestrator (OpenCode Go)
 
-> **Información actualizada:** 9 de septiembre de 2026
+> **Información actualizada:** 13 de septiembre de 2026
 > Modelos: [modelos-opencode-go.md](./modelos-opencode-go.md) · [OpenCode Go docs](https://opencode.ai/docs/go/)
 > Runtime: [gentle-ai OpenCode SDD Profiles](https://github.com/Gentleman-Programming/gentle-ai/blob/main/docs/opencode-profiles.md)
 
@@ -132,7 +132,7 @@ Mejor relación calidad/request. Casi todo el ciclo cabe cómodo en límites Go.
 | **sdd-spec** | DeepSeek V4 Pro | `opencode-go/deepseek-v4-pro` | ~1,050 | Specs paso a paso con buen razonamiento |
 | **sdd-design** | MiMo-V2.5-Pro | `opencode-go/mimo-v2.5-pro` | ~3,250 | Diseño/código de negocio; mucho volumen |
 | **sdd-tasks** | Kimi K2.7 Code | `opencode-go/kimi-k2.7-code` | ~1,350 | Tasks accionables orientadas a implementación |
-| **sdd-apply** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~7,600 | Implementar e iterar TDD a full speed |
+| **sdd-apply** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~13,000 | Implementar e iterar TDD a full speed |
 | **sdd-verify** | DeepSeek V4 Pro | `opencode-go/deepseek-v4-pro` | ~1,050 | Detectar gaps vs spec sin ir a premium |
 | **sdd-archive** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Archive confiable y barato |
 | **sdd-onboard** | MiniMax M3 | `opencode-go/minimax-m3` | ~3,200 | Onboard amplio, API Anthropic, buen costo |
@@ -176,12 +176,12 @@ Máximo throughput. Calidad “suficiente” para explorar y entregar cambios ch
 |--------|--------|-----|--------|---------|
 | **orchestrator** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Routing barato y decente |
 | **sdd-init** | MiniMax M3 | `opencode-go/minimax-m3` | ~3,200 | Init confiable sin premium |
-| **sdd-explore** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~7,600 | Muchas lecturas/iteraciones |
+| **sdd-explore** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~13,000 | Muchas lecturas/iteraciones |
 | **sdd-propose** | MiniMax M3 | `opencode-go/minimax-m3` | ~3,200 | Mejor del tier barato para scope |
 | **sdd-spec** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Specs legibles y rápidas |
 | **sdd-design** | MiniMax M3 | `opencode-go/minimax-m3` | ~3,200 | Diseño OK sin subir a Pro/Max |
 | **sdd-tasks** | Hy3 | `opencode-go/hy3` | ~4,300 | Tasks simples, alto volumen |
-| **sdd-apply** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~7,600 | Implementación masiva / TDD loop |
+| **sdd-apply** | DeepSeek V4 Flash | `opencode-go/deepseek-v4-flash` | ~13,000 | Implementación masiva / TDD loop |
 | **sdd-verify** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Verify liviano pero útil |
 | **sdd-archive** | MiMo-V2.5 | `opencode-go/mimo-v2.5` | ~30,100 | Archive casi gratis |
 | **sdd-onboard** | MiMo-V2.5 | `opencode-go/mimo-v2.5` | ~30,100 | Ingesta enorme de codebase |
@@ -205,11 +205,11 @@ gentle-ai sync \
   --profile-phase cheap:sdd-onboard:opencode-go/mimo-v2.5
 ```
 
-**Modo ultra-barato (opcional):** `omen-alpha` es el nuevo modelo de alto volumen en Go (~11,600 req/5h, usage $100). Podés poner archive/onboard/explore ahí:
+**Modo ultra-barato (opcional):** mientras dure la promo (hasta el **20 de septiembre de 2026**), `deepseek-v4.1-flash` tiene **4x de usage** (~26,000 req/5h). Podés poner archive/onboard/explore ahí:
 
 ```bash
---profile-phase cheap:sdd-archive:opencode-go/omen-alpha \
---profile-phase cheap:sdd-onboard:opencode-go/omen-alpha
+--profile-phase cheap:sdd-archive:opencode-go/deepseek-v4.1-flash \
+--profile-phase cheap:sdd-onboard:opencode-go/deepseek-v4.1-flash
 ```
 
 ⚠️ No uses `muse-spark-1.2-contributor` ni `muse-spark-1.3-contributor` en perfiles de trabajo real si te importa privacy (entrenan con tus prompts).
@@ -299,11 +299,11 @@ O vía TUI: `gentle-ai` → **OpenCode SDD Profiles** → Create (`top` / `balan
 3. **Legacy:** `sdd-orchestrator` se migra a `gentle-orchestrator` en sync.
 4. **Solo un subscriber Go por workspace.**
 5. **DeepSeek Peak hours** (01:00–04:00 y 06:00–10:00 UTC) cuestan el doble → preferí Flash/Pro off-peak si podés.
-6. **Usage $15** (K3, GLM-5.3, GLM-5.3-Flash, Qwen3.8 Max, Grok, GPT 5.6 Luna, DeepSeek Pro/Vision, MiMo Pro…): no los pongas en apply masivo.
+6. **Usage $15** (K3, GLM-5.3, Qwen3.8 Max, Grok 4.6, GPT 5.6 Luna, DeepSeek V4 Pro / Flash Vision Exp / V4.1, MiMo-V2.5-Pro…): no los pongas en apply masivo. GLM-5.3-Flash ahora es $60 y DeepSeek V4 Flash pasó a $30.
 7. **Judgment Day** (`jd-judge-a`, `jd-judge-b`, `jd-fix-agent`) es independiente de estos perfiles; se configura aparte en el model picker de gentle-ai.
 8. **Strategy sync:** `generated-multi` (default) escribe los 11 agentes en `opencode.json`. Si usás profiles externos en `~/.config/opencode/profiles/*.json`, gentle-ai pasa a `external-single-active`.
 9. Si te quedás sin límite Go: activá **Use balance** (Zen) o bajá a `cheap` / free models.
-10. **Modelos nuevos en Go (sep 2026)** que podés rotar en los perfiles: `qwen3.8-flash` (~5,400 req/5h), `hy4-preview` (~1,350 req/5h), `omen-alpha` (~11,600 req/5h) y `muse-spark-1.3-contributor`. Ojo: Qwen3.7 Max bajó su usage de $60 a $30 y sus requests (~170 req/5h).
+10. **Catálogo Go (sep 2026):** entró `deepseek-v4.1-flash` (promo 4x: ~26,000 req/5h hasta el 20 sep; regular ~6,500). `glm-5.3-flash` subió a usage $60 (~6,320 req/5h). DeepSeek V4 Flash subió a ~13,000 req/5h y Vision Exp a ~6,500 (precios más baratos). `omen-alpha` ya no está en el catálogo. Siguen disponibles `qwen3.8-flash` (~5,400 req/5h), `hy4-preview` (~1,350 req/5h) y `muse-spark-1.3-contributor`. Ojo: Qwen3.7 Max bajó su usage de $60 a $30 (~170 req/5h).
 
 ---
 

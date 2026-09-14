@@ -2,7 +2,7 @@
 
 > Guía práctica sobre los modelos gratuitos disponibles en [OpenCode Zen](https://opencode.ai/docs/zen/) y cómo elegir el más adecuado según la tarea: planeamiento, código, refactorización y tests.
 >
-> Última actualización: 9 de septiembre de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
+> Última actualización: 13 de septiembre de 2026. Los modelos gratuitos son "por tiempo limitado" y pueden cambiar o retirarse sin aviso.
 
 ---
 
@@ -189,10 +189,9 @@ opencode -m opencode/big-pickle
 5. Si un modelo gratuito responde mal en tu dominio (p. ej. legacy PHP/Laravel en este proyecto), prueba otro de la lista antes de pagar por uno de pago.
 6. Consulta siempre la [documentación oficial de Zen](https://opencode.ai/docs/zen/) para ver la lista vigente, precios y fechas de deprecación.
 
-### Cambios relevantes del catálogo (09/09/2026)
+### Cambios relevantes del catálogo (13/09/2026)
 
-- Zen incorpora **GPT 6 Astra** (flagship), **GPT 5.6 Sol** y **GPT 5.6 Terra**, además de **Claude Fable 5.1/5**, **Claude Opus 5** y **Claude Sonnet 5**. GPT 5.6 Sol tiene un descuento del 50% vigente hasta el 18 de septiembre de 2026.
-- **Modelos gratuitos:** se suma **Ling 3.0 Flash Fin Free**; se retira **Hy3 Free**; **Muse Spark 1.2 Contributor Free** es reemplazado por **Muse Spark 1.3 Contributor Free**.
-- **Deprecados** (no usar en configuraciones nuevas): MiniMax M2.5 (5 ago), Kimi K2.5 (5 ago), Claude Opus 4.1 (5 ago), las variantes GPT Codex (23 jul), GLM 5 (14 may) y Gemini 3 Pro (9 mar).
-- Zen ofrece auto-recarga: si el saldo baja de $5, puede recargar automáticamente $20. Se puede desactivar o ajustar desde la consola.
-- En workspaces, los administradores pueden restringir modelos y definir límites mensuales por miembro; también se puede traer tu propia API key de OpenAI o Anthropic.
+- **Modelos gratuitos:** la lista vigente no cambia (Big Pickle, MiMo-V2.5 Free, Ling 3.0 Flash Fin Free, Nemotron 3 Ultra/Lightning Free y Muse Spark 1.3 Contributor Free). En la revisión anterior se había sumado **Ling 3.0 Flash Fin Free**, retirado **Hy3 Free** y reemplazado **Muse Spark 1.2 Contributor Free** por el 1.3.
+- **Deprecados** (no usar en configuraciones nuevas): la lista oficial se amplía con **Qwen3 Coder 480B** (6 feb), **Claude Haiku 3.5** (16 feb), **Kimi K2 y K2 Thinking** (6 mar), **MiniMax M2.1, GLM 4.7 y GLM 4.6** (15 mar), y **Claude Sonnet 4** (15 jun). Ya figuraban: **Gemini 3 Pro** (9 mar), las variantes **GPT Codex** — GPT 5.2/5.1/5.1 Max/5.1 Mini/5 Codex — (23 jul), **GLM 5** (14 may) y **MiniMax M2.5, Kimi K2.5 y Claude Opus 4.1** (5 ago).
+- Zen sigue incorporando **GPT 6 Astra** (flagship), **GPT 5.6 Sol** y **GPT 5.6 Terra**, además de **Claude Fable 5.1/5**, **Claude Opus 5** y **Claude Sonnet 5**. GPT 5.6 Sol tiene un descuento del 50% vigente hasta el 18 de septiembre de 2026.
+- **Auto-recarga** (saldo < $5 → recarga $20, configurable) y **workspaces** (restricción de modelos, límites mensuales por miembro, bring-your-own-key de OpenAI/Anthropic): sin cambios.
