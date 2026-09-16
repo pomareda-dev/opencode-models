@@ -216,6 +216,80 @@ gentle-ai sync \
 
 ---
 
+## 4. Perfiles Judgment Day
+
+Judgment Day es un reviewer adversarial de dos jueces con un agente de fix acotado. **Nunca** lo corrijas junto con los 4R de RDD (review-\*); usá uno u otro, no ambos.
+
+| Agente | Rol | Restricción clave |
+|--------|-----|-------------------|
+| **jd-judge-a** | Juez A (solo lectura) | Modelo distinto a jd-judge-b |
+| **jd-judge-b** | Juez B (solo lectura) | Modelo distinto a jd-judge-a |
+| **jd-fix-agent** | Fix quirúrgico acotado | Necesita capability de código |
+
+**Regla:** los dos jueces deben usar modelos de **familias distintas** para maximizar diversidad de detección. Si usás el mismo modelo para ambos, perdés el valor del acuerdo ciego.
+
+| Agente | TOP | BALANCED | CHEAP |
+|--------|-----|----------|-------|
+| **jd-judge-a** | Qwen3.8 Max `opencode-go/qwen3.8-max` | Qwen3.7 Plus `opencode-go/qwen3.7-plus` | GLM-5.3-Flash `opencode-go/glm-5.3-flash` |
+| **jd-judge-b** | GLM-5.3 `opencode-go/glm-5.3` | MiniMax M3 `opencode-go/minimax-m3` | Qwen3.7 Plus `opencode-go/qwen3.7-plus` |
+| **jd-fix-agent** | Kimi K2.7 Code `opencode-go/kimi-k2.7-code` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+
+**Por qué estas asignaciones:**
+
+- **TOP:** Qwen3.8 Max + GLM-5.3 = máxima razonamiento en ambos jueces, familias distintas. K2.7 Code para el fix por su specialization en código.
+- **BALANCED:** Qwen3.7 Plus + MiniMax M3 = buen razonamiento, alto cupo, familias distintas. DeepSeek V4 Flash para fix: rápido y suficiente.
+- **CHEAP:** GLM-5.3-Flash ($60 usage, ~6,320 req/5h) + Qwen3.7 Plus = barato y diverso. Fix con V4 Flash por volumen.
+
+**Cómo configurar:** los slots JD son asignaciones de modelo de **workflow-level**, independientes de los perfiles SDD. Se configuran en el TUI **Configure Models** (no vía `--profile-phase`, que solo cubre fases `sdd-*`):
+
+1. `gentle-ai` → **Configure Models**
+2. Elegí el slot `jd-judge-a`, `jd-judge-b` o `jd-fix-agent` → asigná el modelo.
+
+En `opencode.json` se materializan como entradas `agent.jd-judge-*` (subagentes ocultos, `__managed_by: gentle-ai/sdd`). Si no los tocás, gentle-ai los deja en el modelo por defecto.
+
+> Los slots JD son **independientes de los perfiles SDD** y de los perfiles nombrados (`top`/`balanced`/`cheap`). Un cambio en un perfil no altera los jueces.
+
+---
+
+## 5. Perfiles de Review RDD (4R + Refuter + Validator)
+
+Los agentes de review implementan el contrato `gentle-ai.review-integration/v2` (RDD). Cada uno recibe un **lens** (perspectiva) distinto sobre el mismo candidato congelado.
+
+| Agente | Lens (perspectiva) | Tipo |
+|--------|-------------------|------|
+| **review-risk** | R1: seguridad, privilegios, exposición de datos | 4R |
+| **review-readability** | R2: naming, complejidad, intención, mantenibilidad | 4R |
+| **review-reliability** | R3: tests, cobertura, edge cases, determinismo | 4R |
+| **review-resilience** | R4: fallbacks, retry, degradación, observabilidad | 4R |
+| **review-refuter** | Evalúa claims inferenciales de los 4R | Refutador |
+| **review-validator** | Validación read-only post-corrección | Validador |
+
+**Regla:** los 4 lenses (R1–R4) pueden compartir modelo (mismo prompt family, distinta perspectiva). El refuter necesita razonamiento fuerte independiente. El validador necesita understanding de código.
+
+| Agente | TOP | BALANCED | CHEAP |
+|--------|-----|----------|-------|
+| **review-risk** (R1) | GLM-5.3 `opencode-go/glm-5.3` | Kimi K2.7 Code `opencode-go/kimi-k2.7-code` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+| **review-readability** (R2) | GLM-5.3 `opencode-go/glm-5.3` | Kimi K2.7 Code `opencode-go/kimi-k2.7-code` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+| **review-reliability** (R3) | GLM-5.3 `opencode-go/glm-5.3` | Kimi K2.7 Code `opencode-go/kimi-k2.7-code` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+| **review-resilience** (R4) | GLM-5.3 `opencode-go/glm-5.3` | Kimi K2.7 Code `opencode-go/kimi-k2.7-code` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+| **review-refuter** | Kimi K3 `opencode-go/kimi-k3` | GLM-5.2 `opencode-go/glm-5.2` | Qwen3.7 Plus `opencode-go/qwen3.7-plus` |
+| **review-validator** | Qwen3.8 Max `opencode-go/qwen3.8-max` | Qwen3.7 Plus `opencode-go/qwen3.7-plus` | DeepSeek V4 Flash `opencode-go/deepseek-v4-flash` |
+
+**Por qué estas asignaciones:**
+
+- **TOP:** GLM-5.3 para los 4R = mejor razonamiento en cada lens. K3 para el refuter (flagship adversarial). Qwen3.8 Max para validador (máxima verificación final).
+- **BALANCED:** K2.7 Code para los 4R = code-specialized, alto cupo, buen balance. GLM-5.2 para refuter (razonamiento fuerte). Qwen3.7 Plus para validador (barato y sólido).
+- **CHEAP:** DeepSeek V4 Flash para los 4R = rápido y masivo (~13,000 req/5h). Qwen3.7 Plus para refuter. V4 Flash para validador.
+
+**Cómo configurar:** los agentes de review son subagentes ocultos gestionados por gentle-ai/sdd en `opencode.json` (`__managed_by: gentle-ai/sdd`). Su modelo se asigna de la misma forma que los slots JD:
+
+1. `gentle-ai` → **Configure Models** → elegí el slot `review-risk`, `review-readability`, etc. → asigná el modelo.
+2. Alternativamente, editá directamente `opencode.json` → sección `agent.<review-slot>.model`.
+
+> Los agentes de review RDD son **slots independientes** tanto de los perfiles SDD como de Judgment Day. Un cambio de perfil no altera los review agents.
+
+---
+
 ## Comparación rápida
 
 | Fase | TOP | BALANCED | CHEAP |
@@ -300,7 +374,7 @@ O vía TUI: `gentle-ai` → **OpenCode SDD Profiles** → Create (`top` / `balan
 4. **Solo un subscriber Go por workspace.**
 5. **DeepSeek Peak hours** (01:00–04:00 y 06:00–10:00 UTC) cuestan el doble → preferí Flash/Pro off-peak si podés.
 6. **Usage $15** (K3, GLM-5.3, Qwen3.8 Max, Grok 4.6, GPT 5.6 Luna, DeepSeek V4 Pro / Flash Vision Exp / V4.1, MiMo-V2.5-Pro…): no los pongas en apply masivo. GLM-5.3-Flash ahora es $60 y DeepSeek V4 Flash pasó a $30.
-7. **Judgment Day** (`jd-judge-a`, `jd-judge-b`, `jd-fix-agent`) es independiente de estos perfiles; se configura aparte en el model picker de gentle-ai.
+7. **Judgment Day** (`jd-judge-a`, `jd-judge-b`, `jd-fix-agent`) es independiente de estos perfiles; se configura aparte en el model picker de gentle-ai. Ver [Sección 4](#4-perfiles-judgment-day). Los agentes de review RDD (`review-risk`, `review-readability`, `review-reliability`, `review-resilience`, `review-refuter`, `review-validator`) también son slots independientes; ver [Sección 5](#5-perfiles-de-review-rdd-4r--refuter--validator).
 8. **Strategy sync:** `generated-multi` (default) escribe los 11 agentes en `opencode.json`. Si usás profiles externos en `~/.config/opencode/profiles/*.json`, gentle-ai pasa a `external-single-active`.
 9. Si te quedás sin límite Go: activá **Use balance** (Zen) o bajá a `cheap` / free models.
 10. **Catálogo Go (sep 2026):** entró `deepseek-v4.1-flash` (promo 4x: ~26,000 req/5h hasta el 20 sep; regular ~6,500). `glm-5.3-flash` subió a usage $60 (~6,320 req/5h). DeepSeek V4 Flash subió a ~13,000 req/5h y Vision Exp a ~6,500 (precios más baratos). `omen-alpha` ya no está en el catálogo. Siguen disponibles `qwen3.8-flash` (~5,400 req/5h), `hy4-preview` (~1,350 req/5h) y `muse-spark-1.3-contributor`. Ojo: Qwen3.7 Max bajó su usage de $60 a $30 (~170 req/5h).
@@ -313,3 +387,5 @@ O vía TUI: `gentle-ai` → **OpenCode SDD Profiles** → Create (`top` / `balan
 2. Corré un `/sdd-explore` chico en `cheap` para validar routing.
 3. Un `/sdd-propose` en `balanced` o `top` para validar calidad de plan.
 4. Confirmá en consola Go que el usage baja como esperás por fase.
+5. En **Configure Models**: verificá que `jd-judge-a` y `jd-judge-b` usan familias distintas, y que `jd-fix-agent` tiene capability de código.
+6. En **Configure Models**: verificá los slots `review-*` (4R + refuter + validator) si tenés RDD habilitado.
