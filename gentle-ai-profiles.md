@@ -72,7 +72,7 @@ Notas del runtime:
 
 - Los **6 roles de review** se despachan como agentes OpenCode (`REVIEW_AGENTS` en `opencode-review-transport.ts`), aunque `review-refuter` y `review-validator` solo se materializan cuando el contrato nativo los pide (el refuter, por ejemplo, solo cuando hay hallazgos severos candidato-causados).
 - **Judgment Day y Review son independientes entre sí** y de los roles ODD. Un cambio de perfil no toca los otros.
-- `general` y `explore` son agentes nativos de OpenCode: configuralos solo si los usás.
+- `general` y `explore` son **agentes nativos de OpenCode**, no agentes de Gentle-AI. El picker solo les escribe `agent.general.model` / `agent.explore.model` (y opcionalmente `variant`), dejando intacta su definición nativa (mode, permisos, prompt). Los tres nativos —incluido `scout`, que la TUI **no** expone— están desarrollados en la sección 7.1.
 
 ---
 
@@ -307,6 +307,38 @@ Máximo throughput con calidad suficiente. No lo uses para contratos de producci
 | review-validator | GLM-5.3 | Qwen3.7 Plus | DeepSeek V4.1 Flash |
 
 Todos los IDs llevan el prefijo `opencode-go/`.
+
+### 7.1 Agentes nativos de OpenCode (`general`, `explore`, `scout`)
+
+Son agentes **de OpenCode**, no de Gentle-AI: el picker les escribe únicamente `agent.<rol>.model` y deja intacta su definición nativa. Dejar uno sin asignar es válido: hereda el modelo por defecto del runtime.
+
+| Agente nativo | Tipo | Qué hace | Qué exige del modelo |
+|---|---|---|---|
+| **general** | subagente, **puede escribir** | Investigación compleja y tareas multi-paso, con acceso completo a herramientas (puede editar archivos y correr comandos). Se usa para correr varias unidades de trabajo en paralelo (`@general`) | Capacidad de código + tool calling. Tratalo como un segundo `gentle-ai-worker` |
+| **explore** | subagente, **read-only** | Exploración rápida del repo: archivos por patrón, búsqueda de palabras clave, preguntas sobre el código. **No puede modificar archivos** | Velocidad y contexto largo; no necesita un flagship porque no escribe |
+| **scout** | subagente, **read-only** | Documentación externa y dependencias: clona repos en la caché de OpenCode e inspecciona el código upstream | Lectura larga; **la TUI de Gentle-AI no lo expone** → se configura a mano en `opencode.json` con la misma forma |
+
+| Rol | MÁXIMA CALIDAD | BALANCEADO | ECONÓMICO |
+|---|---|---|---|
+| general (OpenCode) | Kimi K2.7 Code | DeepSeek V4.1 Flash | GLM-5.3-Flash |
+| explore (OpenCode) | Kimi K2.7 Code | DeepSeek V4.1 Flash | MiMo-V2.6-Flash |
+| scout (OpenCode) | DeepSeek V4 Pro | MiMo-V2.6-Flash | LongCat-2.0 |
+
+**Por qué:** `general` es un writer más, así que sigue la misma lógica que `gentle-ai-worker` (modelo code-capable con cupo real). `explore` es el gemelo nativo de `gentle-ai-explore`, y como no puede escribir, un modelo rápido y barato alcanza y sobra. En balanceado puse `deepseek-v4.1-flash` en los dos para no apilar un quinto rol sobre el bucket de `kimi-k2.7-code` (~1,350 req/5h), que ya sostiene `gentle-ai-explore` y los 4 lenses.
+
+⚠️ **Tool calling es requisito duro de los tres.** La TUI solo lista modelos que lo soportan; si editás `opencode.json` a mano con un modelo sin tool calling, el subagente no podrá ejecutar herramientas y va a devolver texto en lugar de actuar.
+
+```json
+{
+  "agent": {
+    "general": { "model": "opencode-go/deepseek-v4.1-flash" },
+    "explore": { "model": "opencode-go/deepseek-v4.1-flash" },
+    "scout":   { "model": "opencode-go/mimo-v2.6-flash" }
+  }
+}
+```
+
+Como respaldo gratuito de Zen (prefijo `opencode/`): `glm-5.3-flash-free` para `general` y `longcat-2.5-preview-free` para `explore`.
 
 ---
 
