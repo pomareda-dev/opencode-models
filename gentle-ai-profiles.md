@@ -1,7 +1,7 @@
 # Perfiles de modelos para Gentle-AI (OpenCode)
 
-> **Revisión:** 17 de octubre de 2026 (UTC)<br>
-> **Modelo usado para esta revisión:** `opencode-go/deepseek-v4.1-flash` (esfuerzo: `high`)<br>
+> **Revisión:** 13 de noviembre de 2026 (UTC)<br>
+> **Modelo usado para esta revisión:** `opencode-go/qwen3.8-max`<br>
 > **Catálogo de referencia:** [modelos-opencode-go.md](./modelos-opencode-go.md) · [Zen gratuito](./modelos-opencode-zen.md)<br>
 > **Fuentes del runtime:** [orchestrator.md](https://github.com/Gentleman-Programming/gentle-ai/blob/main/internal/assets/opencode/orchestrator.md) · [agents/](https://github.com/Gentleman-Programming/gentle-ai/tree/main/internal/assets/opencode/agents) · [docs/agents.md](https://github.com/Gentleman-Programming/gentle-ai/blob/main/docs/agents.md) · [docs/usage.md](https://github.com/Gentleman-Programming/gentle-ai/blob/main/docs/usage.md)
 
@@ -118,7 +118,7 @@ Cinco reglas gobiernan las recomendaciones:
 1. **Planear y juzgar caro, ejecutar y explorar barato.** Los roles que se corren una vez por cambio (verify, judges, refuter, validator) pueden pagar un modelo de $15. Los que se corren en volumen (worker, explore, lenses) necesitan cupo real.
 2. **El cupo es por modelo, no por rol.** Si 7 roles apuntan al mismo modelo de ~220 req/5h, se pelean el mismo bucket. En el tier de máxima calidad los flagships se **reparten** entre roles en lugar de apilarse.
 3. **Diversidad real donde el contrato la exige.** `jd-judge-a` y `jd-judge-b` deben ser de **familias distintas** (ceguera + sesgos complementarios); el refuter debe ser de familia distinta a la de los lenses.
-4. **Privacidad.** Ningún rol que lea código privado puede usar modelos que entrenen con tus prompts: **excluí `gemini-4-argon-contributor` y `muse-spark-1.2/1.3-contributor`** de todos los roles de este documento.
+4. **Privacidad.** Ningún rol que lea código privado puede usar modelos que entrenen con tus prompts: **excluí `muse-spark-1.2/1.3-contributor` e `iceman-contributor-free`** de todos los roles de este documento. `gemini-4-argon` **ya no es la versión Contributor**: no entrena y tiene retención de 0 días, así que es apto para cualquier rol (además está 50% off hasta el 30/11/2026).
 5. **El cache read manda en sesiones largas.** En agentes con contexto grande, la mayor parte del consumo es cache read, no salida: `MiMo-V2.6-Flash` ($0.0028), `DeepSeek V4.1 Flash` ($0.003), `LongCat-2.0` ($0.006), `Qwen3.8 Flash` ($0.016) contra $0.19–$0.50 en los premium.
 
 ---
@@ -153,8 +153,8 @@ Máximo razonamiento por rol, con los flagships **repartidos** para no agotar un
 |---|---|
 | orchestrator | `opencode-go/glm-5.2` (por cupo) · `opencode-go/kimi-k3` |
 | worker / explore | `opencode-go/glm-5.3` (más razonamiento, 1/6 del cupo) |
-| judge-a / refuter | `opencode-go/glm-5.3` · `opencode-go/grok-4.7` |
-| lenses | es válido poner **los 4 en el mismo modelo** (mismo prompt family, distinto mandato); repartirlos agrega diversidad y reparte cupo |
+| judge-a / refuter | `opencode-go/kimi-k3.1-pro` (nuevo, $2/$10 por 1M, ~147 req/5h) · `opencode-go/glm-5.3` · `opencode-go/grok-4.7` |
+| lenses | es válido poner **los 4 en el mismo modelo** (mismo prompt family, distinto mandato); repartirlos agrega diversidad y reparte cupo. `opencode-go/gemini-4-argon` (ahora privado y a mitad de precio) es una opción premium válida |
 | validator | `opencode-go/qwen3.8-max` · `opencode-go/deepseek-v4-pro` |
 
 ```json
@@ -188,10 +188,10 @@ Mejor relación calidad/cupo: casi todo el ciclo entra cómodo en los límites d
 | **gentle-orchestrator** | GLM-5.2 | `opencode-go/glm-5.2` | ~880 | Excelente routing con cupo para un orquestador que llama todo el día |
 | **gentle-ai-explore** | Kimi K2.7 Code | `opencode-go/kimi-k2.7-code` | ~1,350 | Exploración code-first |
 | **gentle-ai-verify** | DeepSeek V4 Pro | `opencode-go/deepseek-v4-pro` | ~1,050 | Detección de gaps de spec sin pagar flagship |
-| **gentle-ai-worker** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | El mayor cupo del catálogo ($80) con buena calidad de código |
+| **gentle-ai-worker** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | El mayor cupo del catálogo ($100) con buena calidad de código |
 | **jd-judge-a** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Razonamiento sólido + cupo masivo, familia Anthropic API |
 | **jd-judge-b** | MiniMax M3 | `opencode-go/minimax-m3` | ~3,200 | Familia distinta a Qwen → diversidad real |
-| **jd-fix-agent** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Parches chicos y bounded, muchas veces |
+| **jd-fix-agent** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Parches chicos y bounded, muchas veces |
 | **review-risk** (R1) | Kimi K2.7 Code | `opencode-go/kimi-k2.7-code` | ~1,350 | Code-specialized para leer el diff con criterio |
 | **review-readability** (R2) | Kimi K2.7 Code | `opencode-go/kimi-k2.7-code` | ~1,350 | Ídem |
 | **review-reliability** (R3) | Kimi K2.7 Code | `opencode-go/kimi-k2.7-code` | ~1,350 | Ídem |
@@ -208,7 +208,7 @@ Mejor relación calidad/cupo: casi todo el ciclo entra cómodo en los límites d
 | orchestrator | `opencode-go/deepseek-v4.1-flash` (más cupo, menos finura) |
 | worker | `opencode-go/minimax-m3` (mejor código, 1/10 del cupo) · `opencode-go/glm-5.3-flash` |
 | lenses | `opencode-go/deepseek-v4.1-flash` (máximo volumen) · `opencode-go/qwen3.8-flash` |
-| refuter | `opencode-go/hy4-preview` · `opencode-go/space-bunny` (otra familia, $30) |
+| refuter | `opencode-go/hy4` (estable, otra familia, $60, ~2,710 req/5h) · `opencode-go/hy4-preview` · `opencode-go/minimax-m3.1-flash` |
 | judge-b | `opencode-go/hy3` · `opencode-go/deepseek-v4.1-flash` |
 
 ```json
@@ -240,20 +240,20 @@ Máximo throughput con calidad suficiente. No lo uses para contratos de producci
 | Rol | Modelo | ID | req/5h | Por qué |
 |---|---|---|---|---|
 | **gentle-orchestrator** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Routing decente y baratísimo por request |
-| **gentle-ai-explore** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Muchísimas lecturas e iteraciones, cache read $0.003 |
+| **gentle-ai-explore** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Muchísimas lecturas e iteraciones, cache read $0.003 |
 | **gentle-ai-verify** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Verificación liviana pero útil |
 | **gentle-ai-worker** | GLM-5.3-Flash | `opencode-go/glm-5.3-flash` | ~6,320 | Code-oriented a $0.15/$0.50, el mejor punto calidad/precio para escribir |
 | **jd-judge-a** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | Juez barato de otra familia |
-| **jd-judge-b** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Familia distinta a Qwen |
+| **jd-judge-b** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Familia distinta a Qwen |
 | **jd-fix-agent** | GLM-5.3-Flash | `opencode-go/glm-5.3-flash` | ~6,320 | Fix acotado con modelo de código |
-| **review-risk** (R1) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Rápido y masivo |
-| **review-readability** (R2) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Ídem |
-| **review-reliability** (R3) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Ídem |
-| **review-resilience** (R4) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Ídem |
+| **review-risk** (R1) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Rápido y masivo |
+| **review-readability** (R2) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Ídem |
+| **review-reliability** (R3) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Ídem |
+| **review-resilience** (R4) | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Ídem |
 | **review-refuter** | Qwen3.7 Plus | `opencode-go/qwen3.7-plus` | ~4,300 | El rol que más razonamiento necesita en este tier |
-| **review-validator** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~34,670 | Validación barata |
+| **review-validator** | DeepSeek V4.1 Flash | `opencode-go/deepseek-v4.1-flash` | ~43,330 | Validación barata |
 
-**Uso estimado:** bajo. Podés correr varios ciclos ODD por día. Un review de 4 lenses + refuter + validator consume ~6 requests sobre buckets de 34,670.
+**Uso estimado:** bajo. Podés correr varios ciclos ODD por día. Un review de 4 lenses + refuter + validator consume ~6 requests sobre buckets de 43,330.
 
 ⚠️ **DeepSeek cobra tarifa peak** (01:00–04:00 y 06:00–10:00 UTC, lunes a viernes): el resto —incluidos todos los fines de semana— es off-peak y **cuesta la mitad**. Si tu ventana de trabajo cae en peak, `deepseek-v4.1-flash` deja de ser el más barato y conviene `MiMo-V2.6-Flash` (30,100 req/5h, $0.0028 de cache read) para explore/lenses.
 
@@ -262,9 +262,9 @@ Máximo throughput con calidad suficiente. No lo uses para contratos de producci
 | Rol | Alternativa |
 |---|---|
 | worker / fix | `opencode-go/mimo-v2.6-flash` (30,100 req/5h) · `opencode-go/longcat-2.0` |
-| explore / lenses | `opencode-go/mimo-v2.6-flash` · `opencode-go/qwen3.8-flash` |
+| explore / lenses | `opencode-go/mimo-v2.6-flash` · `opencode-go/qwen3.8-flash` · `opencode-go/minimax-m3.1-flash` (1M de contexto, ~3,880 req/5h) |
 | orchestrator / verify | `opencode-go/deepseek-v4.1-flash` · `opencode-go/glm-5.3-flash` |
-| último recurso | `opencode-go/longcat-2.5-preview-free` y `opencode-go/beam-free` (gratis temporal, regiones limitadas) |
+| último recurso | `opencode-go/longcat-2.5-free` (gratis, requiere región **Global**; hosteado en China) y `opencode-go/beam-free` (gratis temporal, regiones limitadas) |
 
 ```json
 {
@@ -338,7 +338,7 @@ Son agentes **de OpenCode**, no de Gentle-AI: el picker les escribe únicamente 
 }
 ```
 
-Como respaldo gratuito de Zen (prefijo `opencode/`): `glm-5.3-flash-free` para `general` y `longcat-2.5-preview-free` para `explore`.
+Como respaldo gratuito de Zen (prefijo `opencode/`): `glm-5.3-flash-free` o `minimax-m3.1-flash-free` para `general`, y `beam-free` para `explore` (`longcat-2.5-free` tiene 100 req/día en Zen y está hosteado en China).
 
 ---
 
@@ -365,11 +365,11 @@ Detalles operativos:
 
 1. **Dos jueces, dos familias.** `jd-judge-a` y `jd-judge-b` deben usar modelos de familias distintas; si compartís modelo perdés la ceguera. Lo mismo aplica al refuter respecto de los lenses (por eso en este documento el refuter nunca comparte modelo con los 4R).
 2. **Los 4 lenses pueden compartir modelo** (mismo prompt family, distinto mandato) o repartirse; repartir agrega diversidad y reparte cupo, compartir simplifica la lectura del consumo.
-3. **Nunca pongas un modelo de $15 en el rol de volumen.** El worker y explore necesitan cientos de requests; los buckets de $15 (~110–1,050 req/5h) se agotan en una tarde.
-4. **Privacidad ≠ negociable.** Ningún rol que lea código privado con `gemini-4-argon-contributor` ni `muse-spark-1.2/1.3-contributor`.
-5. **Modelos retirados: no volver a ellos.** `kimi-k2.6`, `deepseek-v4-flash`, `grok-4.6` y `minimax-m2.7` salieron de la lista oficial aunque algunos sigan apareciendo como legados en el catálogo live; van a desaparecer sin aviso.
+3. **Nunca pongas un modelo de $15 en el rol de volumen.** El worker y explore necesitan cientos de requests; los buckets de $15 (~110–4,230 req/5h según el modelo, y los de razonamiento profundo como Kimi K3/K3.1 Pro rondan los ~110–147) se agotan en una tarde.
+4. **Privacidad ≠ negociable.** Ningún rol que lea código privado con `muse-spark-1.2/1.3-contributor` ni `iceman-contributor-free`: entrenan con tus prompts. `gemini-4-argon` ya no está excluido (no entrena, retención 0 días).
+5. **Modelos retirados: no volver a ellos.** `space-bunny`, `gemini-4-argon-contributor`, `mimo-v2.5`, `mimo-v2.5-pro`, `kimi-k2.6`, `deepseek-v4-flash`, `grok-4.6`, `minimax-m2.7`, `glm-5.1`, `omen-alpha`, `qwen3.6-plus`, `qwen3.7-max` y `minimax-m2.5` salieron del catálogo live de Go. `gemini-4-argon` (sin sufijo) es el reemplazo privado del Contributor.
 6. **Base conductor y roles son independientes.** `gentle-orchestrator` es el único conductor; no hay `sdd-orchestrator-{name}` ni perfiles nombrados que lo reemplacen.
-7. **Cupo agotado:** activá **Use balance** (Zen) en la consola, o pasá explore/lenses a `longcat-2.0` / `mimo-v2.6-flash`, o a los gratuitos temporales.
+7. **Cupo agotado:** activá **Extra Usage** en la página Go para caer al saldo pay-as-you-go de Console, o pasá explore/lenses a `longcat-2.0` / `mimo-v2.6-flash` / `minimax-m3.1-flash`, o a los gratuitos temporales (`longcat-2.5-free` requiere región Global; `iceman-contributor-free` nunca con código privado).
 
 ---
 
@@ -384,11 +384,12 @@ Detalles operativos:
 
 ---
 
-## 11. Notas operativas del catálogo (17 oct 2026)
+## 11. Notas operativas del catálogo (13 nov 2026)
 
 - **Cupos y precios cambian.** Este documento usa los `req/5h` y precios de [modelos-opencode-go.md](./modelos-opencode-go.md); confirmá el ID exacto en el selector antes de fijarlo.
-- Modelos con límite mensual de **$15** (Kimi K3, GLM-5.3, Qwen3.8 Max, Grok 4.7, DeepSeek V4 Pro, GPT 6/5.6 Luna, Claude Haiku 5.5, MiMo-V2.6-Pro/V2.5-Pro): agotan rápido. Reservalos para roles de una sola corrida por cambio.
+- **Novedades del ciclo:** Kimi K3.1 Pro, Hy4 estable y MiniMax M3.1 Flash se sumaron al catálogo; Gemini 4 Argon dejó de ser Contributor (ahora privado, 50% off hasta el 30/11); DeepSeek V4.1 Flash subió a $100/mes (~43,330 req/5h); Step 5 Preview perdió su promo 4x y volvió a $15 (~430 req/5h).
+- Modelos con límite mensual de **$15** (Kimi K3, Kimi K3.1 Pro, GLM-5.3, Qwen3.8 Max, Grok 4.7, DeepSeek V4 Pro, GPT 6/5.6 Luna, Claude Haiku 5.5, MiMo-V2.6-Pro, Step 5 Preview): agotan rápido. Reservalos para roles de una sola corrida por cambio.
 - **Subagentes en segundo plano** (OpenCode nativo, permiso `task`): `--opencode-background-subagents=auto|on|off`, o `GENTLE_AI_OPENCODE_BACKGROUND_SUBAGENTS`. Son locales al proceso, no sobreviven un reinicio y no aíslan el filesystem: usalos solo para trabajo read-only independiente, nunca para escritores en paralelo en el mismo worktree.
-- **DeepSeek ZDR**: el acuerdo publicado rige hasta el **31 de octubre de 2026** y se renueva mensualmente; involucra a `deepseek-v4-pro` y `deepseek-v4.1-flash`.
+- **DeepSeek ZDR**: el acuerdo publicado rige hasta el **30 de noviembre de 2026** y se renueva mensualmente; involucra a `deepseek-v4-pro` y `deepseek-v4.1-flash`.
 - Los IDs de este documento usan la convención `opencode-go/<model-id>` vista en el catálogo Go. Los modelos gratuitos de Zen usan `opencode/<model-id>` (ver [modelos-opencode-zen.md](./modelos-opencode-zen.md)).
 - Las recomendaciones combinan el posicionamiento de cada modelo en el catálogo con la naturaleza de cada rol. **No son benchmarks**: son un punto de partida defendible que conviene medir contra tu propio consumo.
